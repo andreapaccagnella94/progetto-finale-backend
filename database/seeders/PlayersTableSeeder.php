@@ -18,7 +18,7 @@ class PlayersTableSeeder extends Seeder
     public function run(Faker $faker): void
     {
         $squadre = Team::all();
-        $milan = Team::where("nome", "AC Milan")->first();
+        $milan = Team::where("nome", "Milan")->first();
 
         $ruoli = ["Portiere", "Difensore", "Centrocampista", "Attaccante"];
 

@@ -3,13 +3,13 @@
 return [
 
     [
-        "nome" => "Inter Milano",
+        "nome" => "Inter",
         "citta" => "Milano",
         "stadio" => "Giuseppe Meazza",
         "anno_fondazione" => 1908
     ],
     [
-        "nome" => "AC Milan",
+        "nome" => "Milan",
         "citta" => "Milano",
         "stadio" => "Giuseppe Meazza",
         "anno_fondazione" => 1899

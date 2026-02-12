@@ -14,7 +14,7 @@ class MilanPlayersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $milan = Team::where("nome", "AC Milan")->first();
+        $milan = Team::where("nome", "Milan")->first();
         $milan_players = config("milan_players");
 
         foreach ($milan_players as $player) {

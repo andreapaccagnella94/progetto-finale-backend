@@ -17,7 +17,7 @@ class GamesMilanTableSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
-        $milan = Team::where("nome", "AC Milan")->first();
+        $milan = Team::where("nome", "Milan")->first();
         $opponents = Team::where("id", "!=", $milan->id)->get();
 
         for ($i = 0; $i < 10; $i++) {

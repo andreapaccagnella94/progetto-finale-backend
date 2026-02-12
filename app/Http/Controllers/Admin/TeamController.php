@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -12,7 +13,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        // prendo le squadre in ordine alfabetico
+        $squadre = Team::orderBy("nome")->get();
+
+        return view("teams.index", compact("squadre"));
     }
 
     /**
