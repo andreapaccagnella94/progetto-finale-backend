@@ -9,7 +9,7 @@ class Player extends Model
     // questa è la tabella secondaria/dipendente rispetto ai team
     public function team()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, 'squadra_id');
     }
 
     // questa è un many to many rispetto alle partite (Games)

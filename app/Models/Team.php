@@ -9,7 +9,7 @@ class Team extends Model
     // questa è la tabella principale/indipendente rispetto ai giocatori
     public function players()
     {
-        return $this->hasMany(Player::class);
+        return $this->hasMany(Player::class, 'squadra_id');
     }
 
     // questa è la tabella principale/indipendente rispetto alle partite in casa
