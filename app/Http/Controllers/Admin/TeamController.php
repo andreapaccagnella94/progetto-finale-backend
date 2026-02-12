@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\View\Component;
 
 class TeamController extends Controller
 {
@@ -24,7 +25,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        return view("teams.create");
     }
 
     /**
@@ -32,38 +33,65 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newTeam = new Team();
+
+        $newTeam->nome = $data["nome"];
+        $newTeam->citta = $data["citta"];
+        $newTeam->stadio = $data["stadio"];
+        $newTeam->anno_fondazione = $data["anno_fondazione"];
+
+        $newTeam->save();
+
+        return redirect()->route("teams.show", $newTeam);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Team $team)
     {
-        //
+        $squadra = $team;
+        return view("teams.show", compact("squadra"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Team $team)
     {
-        //
+        $squadra = $team;
+        return view("teams.edit", compact("squadra"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Team $team)
     {
-        //
+        $squadra = $team;
+        $data = $request->all();
+
+        $squadra->nome = $data["nome"];
+        $squadra->citta = $data["citta"];
+        $squadra->stadio = $data["stadio"];
+        $squadra->anno_fondazione = $data["anno_fondazione"];
+
+        $squadra->update();
+
+        return redirect()->route("teams.show", $squadra);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Team $team)
     {
-        //
+        $squadra = $team;
+
+        $squadra->delete();
+
+        return redirect()->route("teams.index");
     }
 }
