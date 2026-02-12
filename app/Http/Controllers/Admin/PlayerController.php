@@ -7,6 +7,8 @@ use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
+
+
 class PlayerController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $giocatori = Player::orderBy("ruolo")->paginate(16)/* ->get() */;
+        $giocatori = Player::orderBy("ruolo")->paginate(12);
         return view("players.index", compact("giocatori"));
     }
 
