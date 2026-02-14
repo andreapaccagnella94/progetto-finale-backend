@@ -9,7 +9,7 @@ class Team extends Model
     // questa è la tabella principale/indipendente rispetto ai giocatori
     public function players()
     {
-        return $this->hasMany(Player::class, 'squadra_id');
+        return $this->hasMany(Player::class, 'squadra_id'); // Eloquent cerca la colonna team_id nel db quindi bisogna indicare quale deve prendere se la lingua non combacia
     }
 
     // questa è la tabella principale/indipendente rispetto alle partite in casa

@@ -14,9 +14,21 @@ class PlayerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $giocatori = Player::orderBy("ruolo")->paginate(12);
+        $giocatori_query = Player::orderBy("ruolo"); // usato paginate e aggiunto nel file AppServiceProvider.php le rige per usare Bootstrap come stile
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $giocatori_query->where(function ($q) use ($search) {
+                $q->where('nome', 'like', "%{$search}%")
+                    ->orWhere('cognome', 'like', "%{$search}%")
+                    ->orWhere('ruolo', 'like', "%{$search}%");
+            });
+        }
+
+        $giocatori = $giocatori_query->paginate(12);
+
         return view("players.index", compact("giocatori"));
     }
 
@@ -25,7 +37,10 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        //
+        $ruoli = ["Portiere", "Difensore", "Centrocampista", "Attaccante"];
+        $squadre = Team::all();
+
+        return view("players.create", compact("ruoli", "squadre"));
     }
 
     /**
@@ -33,38 +48,70 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newPlayer = new Player();
+
+        $newPlayer->nome = $data["nome"];
+        $newPlayer->cognome = $data["cognome"];
+        $newPlayer->ruolo = $data["ruolo"];
+        $newPlayer->numero_maglia = $data["numero_maglia"];
+        $newPlayer->eta = $data["eta"];
+        $newPlayer->squadra_id = $data["squadra_id"];
+
+        $newPlayer->save();
+
+        return redirect()->route("players.show", $newPlayer);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Player $player)
     {
-        //
+        $giocatore = $player;
+        return view("players.show", compact("giocatore"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Player $player)
     {
-        //
+        $giocatore = $player;
+        $ruoli = ["Portiere", "Difensore", "Centrocampista", "Attaccante"];
+        $squadre = Team::all();
+
+        return view("players.edit", compact("giocatore", "ruoli", "squadre"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Player $player)
     {
-        //
+        $giocatore = $player;
+        $data = $request->all();
+
+        $giocatore->nome = $data["nome"];
+        $giocatore->cognome = $data["cognome"];
+        $giocatore->ruolo = $data["ruolo"];
+        $giocatore->numero_maglia = $data["numero_maglia"];
+        $giocatore->eta = $data["eta"];
+        $giocatore->squadra_id = $data["squadra_id"];
+
+        $giocatore->update();
+
+        return redirect()->route("players.show", $giocatore);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Player $player)
     {
-        //
+        $player->delete();
+
+        return redirect()->route("players.index");
     }
 }

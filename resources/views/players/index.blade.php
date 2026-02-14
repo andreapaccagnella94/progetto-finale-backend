@@ -12,6 +12,12 @@
                     <i class="fas fa-plus"></i> Nuovo Giocatore
                 </a>
             </div>
+            <div class="mb-3">
+                <form method="GET" action="{{ route('players.index') }}" class="d-flex">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Cerca giocatore..." value="{{ request()->search }}">
+                    <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+                </form>
+            </div>
             
             <div class="table-responsive">
                 <table class="table table-striped table-hover">

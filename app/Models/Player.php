@@ -9,7 +9,7 @@ class Player extends Model
     // questa è la tabella secondaria/dipendente rispetto ai team
     public function team()
     {
-        return $this->belongsTo(Team::class, 'squadra_id');
+        return $this->belongsTo(Team::class, 'squadra_id'); // Eloquent cerca la colonna team_id nel db quindi bisogna indicare quale deve prendere se la lingua non combacia
     }
 
     // questa è un many to many rispetto alle partite (Games)
