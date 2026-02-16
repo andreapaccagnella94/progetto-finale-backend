@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -81,8 +82,12 @@ class PlayerController extends Controller
         $giocatore = $player;
         $ruoli = ["Portiere", "Difensore", "Centrocampista", "Attaccante"];
         $squadre = Team::all();
+        // solo le partite in cui è presente la squadra del giocatore
+        $partite = Game::where("squadra_casa_id", $giocatore->squadra_id)
+            ->orWhere("squadra_trasferta_id", $giocatore->squadra_id)
+            ->get();
 
-        return view("players.edit", compact("giocatore", "ruoli", "squadre"));
+        return view("players.edit", compact("giocatore", "ruoli", "squadre", "partite"));
     }
 
     /**
@@ -93,6 +98,7 @@ class PlayerController extends Controller
         $giocatore = $player;
         $data = $request->all();
 
+
         $giocatore->nome = $data["nome"];
         $giocatore->cognome = $data["cognome"];
         $giocatore->ruolo = $data["ruolo"];
@@ -102,6 +108,13 @@ class PlayerController extends Controller
 
         $giocatore->update();
 
+        // sincronizzare i dati con la tabella pivot
+        if ($request->has("games")) {
+            $giocatore->games()->sync($data["games"]);
+        } else {
+            $giocatore->games()->detach();
+        }
+
         return redirect()->route("players.show", $giocatore);
     }
 
@@ -110,6 +123,12 @@ class PlayerController extends Controller
      */
     public function destroy(Player $player)
     {
+        // verifico se il mio giocatore ha partite collegate e elimino dalla pivot
+        if ($player->has("games")) {
+            $player->games()->detach();
+        }
+
+        // elimino il giocatore
         $player->delete();
 
         return redirect()->route("players.index");

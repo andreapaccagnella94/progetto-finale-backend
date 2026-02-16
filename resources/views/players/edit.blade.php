@@ -55,7 +55,30 @@
                             </select>
                         </div>
                 
-                        
+                        <!-- Sezione Partite con Checkbox -->
+                        <div class="mb-3">
+                            <label class="form-label">Partecipazione alle Partite</label>
+                            <div class="alert alert-info">
+                                <small>Seleziona/deseleziona le partite in cui il giocatore ha partecipato</small>
+                            </div>
+                            
+                            @if ($partite->count() > 0)
+                            <div id="partite-container">
+                                <div class="text-muted">
+                                    @foreach ($partite as $partita)
+                                    <div class="partita me-3">
+                                        <input type="checkbox" name="games[]" value="{{$partita->id}}" id="game-{{$partita->id}}" {{$giocatore->games->contains($partita->id) ? "checked" : ""}} >
+                                        <label for="game-{{$partita->id}}" class="form-label">{{ $partita->teamHome->nome }} vs {{ $partita->teamAway->nome }}</label>
+                                    </div>    
+                                    @endforeach
+                                </div>
+                            </div>
+                            @else 
+                            <div class="alert alert-warning">
+                                Nessuna partita disponibile del giocatore selezionato selezionata.
+                            </div>
+                            @endif
+                        </div>
                 
                         <button type="submit" class="btn btn-success">Salva Modifica Giocatore</button>
                         <a href="{{ route('players.show', $giocatore->id) }}" class="btn btn-secondary">Annulla</a>

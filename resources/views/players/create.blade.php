@@ -55,6 +55,19 @@
                             </select>
                         </div>
                 
+                        <!-- Sezione Partite con Checkbox -->
+                        <div class="mb-3">
+                            <label class="form-label">Partecipazione alle Partite</label>
+                            <div class="alert alert-info">
+                                <small>Seleziona le partite in cui il giocatore ha partecipato</small>
+                            </div>
+                            
+                            <div id="partite-container">
+                                <div class="text-muted">
+                                    Seleziona prima una squadra e dopo modifica per vedere le partite disponibili
+                                </div>
+                            </div>
+                        </div>
                         
                 
                         <button type="submit" class="btn btn-success">Salva Modifica Giocatore</button>
