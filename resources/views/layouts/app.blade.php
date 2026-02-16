@@ -52,6 +52,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/players') }}">{{ __('Giocatori') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('/games') }}">{{ __('Partite') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

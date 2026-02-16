@@ -5,69 +5,65 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Gestione Giocatori</h1>
+            <h1>Gestione Partite</h1>
             
             <div class="d-flex justify-content-between mb-3">
-                <a href="{{ route('players.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nuovo Giocatore
+                <a href="{{ route('games.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nuova Partita
                 </a>
             </div>
-            {{-- cercare un giocatore per nome cognome e ruolo --}}
-            <div class="mb-3">
-                <form method="GET" action="{{ route('players.index') }}" class="d-flex">
-                    <input type="text" name="search" class="form-control me-2" placeholder="Cerca giocatore..." value="{{ request()->search }}">
-                    <button class="btn btn-outline-secondary" type="submit">Cerca</button>
-                </form>
-            </div>
-            
+                        
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>#</th>
-                            <th>Nome</th>     
-                            <th>Cognome</th>
-                            <th>Ruolo</th>
-                            <th>Età</th>
-                            <th>Squadra</th>
+                            <th>Data/ora</th>
+                            <th>Casa</th>     
+                            <th>Risultato</th>
+                            <th>Ospite</th>
+                            <th>Competizione</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($giocatori as $giocatore)
+                        @foreach($partite as $partita)
                         <tr>
-                            <td>{{ $giocatore->numero_maglia }}</td>
-                            <td>{{ $giocatore->nome }}</td>
-                            <td>{{ $giocatore->cognome }}</td>
-                            <td>{{ $giocatore->ruolo }}</td>
-                            <td>{{ $giocatore->eta }} anni</td>
-                            
-                            <td>{{ $giocatore->team->nome ?? 'N/D' }}</td>
+                            <td>{{ $partita->data }}</td>
+                            <td>{{ $partita->teamHome->nome }}</td>
+                            <td>
+                                @if ($partita->gol_casa !== null && $partita->gol_trasferta !== null)
+                                    {{$partita->gol_casa}} - {{$partita->gol_trasferta}}
+                                @else
+                                    N/D
+                                @endif
+                            </td>
+                            <td>{{ $partita->teamAway->nome}}</td>
+                            <td>{{ $partita->competizione }}</td>
                             <td>
                                 <div class="btn-group gap-2" role="group">
-                                    <a href="{{ route('players.show', $giocatore->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('games.show', $partita->id) }}" class="btn btn-info btn-sm">
                                         Visualizza
                                     </a>
-                                    <a href="{{ route('players.edit', $giocatore->id) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('games.edit', $partita->id) }}" class="btn btn-warning btn-sm">
                                         Modifica
                                     </a>
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#eliminaGiocatore-{{ $giocatore->id }}">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#eliminaPartita-{{ $partita->id }}">
                                         Elimina
                                     </button>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="eliminaGiocatore-{{ $giocatore->id }}" tabindex="-1" aria-labelledby="eliminaGiocatoreLabel-{{ $giocatore->id }}" aria-hidden="true">
+                                    <div class="modal fade" id="eliminaPartita-{{ $partita->id }}" tabindex="-1" aria-labelledby="eliminaPartitaLabel-{{ $partita->id }}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered"> {{-- mettere al centro il modale --}}
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="eliminaGiocatoreLabel-{{ $giocatore->id }}">Elimina il giocatore: {{ $giocatore->nome }}</h1>
+                                                    <h1 class="modal-title fs-5" id="eliminaPartitaLabel-{{ $partita->id }}">Elimina la partita tra : {{ $partita->teamHome->nome }} e {{$partita->teamAway->nome}}</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Vuoi eliminare il giocatore "<strong>{{ $giocatore->nome }}</strong>"? Questa azione è definitiva.
+                                                    Vuoi eliminare questa partita "<strong>{{$partita->gol_casa}} - {{$partita->gol_trasferta}}</strong>"? Questa azione è definitiva.
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                                                    <form action="{{ route('players.destroy', $giocatore->id) }}" method="POST">
+                                                    <form action="{{ route('games.destroy', $partita->id) }}" method="POST">
 
                                                         @csrf
 
@@ -86,8 +82,8 @@
                     </tbody>
                 </table>
             </div>
-            {{ $giocatori->links() }}
         </div>
     </div>
 </div>
+
 @endsection

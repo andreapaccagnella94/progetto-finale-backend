@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\GamePlayerController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\ProfileController;
@@ -27,5 +29,12 @@ Route::resource("teams", TeamController::class)
 Route::resource("players", PlayerController::class)
     ->middleware(['auth', 'verified']);
 
+// rotte CRUD per la tabella games (usando resource)    
+Route::resource("games", GameController::class)
+    ->middleware(['auth', 'verified']);
+
+// rotte CRUD per la tabella pivot game_player (usando resource)    
+Route::resource("game_player", GamePlayerController::class)
+    ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

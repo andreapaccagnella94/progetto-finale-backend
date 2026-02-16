@@ -3,20 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
-use App\Models\Team;
 use Illuminate\Http\Request;
 
-class GameController extends Controller
+class GamePlayerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $partite = Game::all();
-
-        return view("games.index", compact("partite"));
+        //
     }
 
     /**
@@ -24,9 +20,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        $squadre = Team::all();
-        $allert = false;
-        return view("games.create", compact("squadre", "allert"));
+        //
     }
 
     /**
@@ -34,22 +28,15 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $squadre = Team::all();
-        $allert = true;
-
-        if ($data["squadra_casa_id"] === $data["squadra_trasferta_id"]) {
-            return view("games.create", compact("squadre", "allert"));
-        }
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Game $game)
+    public function show(string $id)
     {
-        $partita = $game;
-        return view("games.show", compact("partita"));
+        //
     }
 
     /**

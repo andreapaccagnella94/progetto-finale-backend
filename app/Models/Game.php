@@ -9,13 +9,13 @@ class Game extends Model
     // questa è la tabella secondaria/dipendente rispetto ai team per la squadra in casa
     public function teamHome()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, "squadra_casa_id");
     }
 
     // questa è la tabella secondaria/dipendente rispetto ai team per la squadra in trasferta
     public function teamAway()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, "squadra_trasferta_id");
     }
 
     // questa è un many to many rispetto ai giocatori (Players)
