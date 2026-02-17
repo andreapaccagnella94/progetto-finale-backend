@@ -16,6 +16,6 @@ class Player extends Model
     public function games()
     {
         return $this->belongsToMany(Game::class)
-            ->withPivot("titolare", "minuti_giocati", "gol_segnati", "assist", "cartellini_gialli", "cartellini_rossi"); // recuperare le colonne dalla tabella pivot con la funzione
+            ->withPivot("id", "titolare", "minuti_giocati", "gol_segnati", "assist", "cartellini_gialli", "cartellini_rossi"); // recuperare le colonne dalla tabella pivot con la funzione
     }
 }

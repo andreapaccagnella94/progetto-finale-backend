@@ -152,10 +152,42 @@
                                     G: {{ $giocatore->pivot->cartellini_gialli }} 
                                     R: {{ $giocatore->pivot->cartellini_rossi }}
                                 </td>
-                                <td>
+                                <td class="gap-1">
                                     <a href="{{ route('players.show', $giocatore->id) }}" class="btn btn-info btn-sm">
-                                        <i class="fas fa-eye"></i>
+                                        Vedi giocatore
                                     </a>
+                                    <a href="{{ route('game_player.edit', $giocatore->pivot->id) }}" class="btn btn-warning btn-sm">
+                                        Modifica
+                                    </a>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#eliminaGiocatore-{{ $giocatore->pivot->id }}">
+                                        Elimina
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="eliminaGiocatore-{{ $giocatore->pivot->id }}" tabindex="-1" aria-labelledby="eliminaGiocatoreLabel-{{ $giocatore->pivot->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered"> {{-- mettere al centro il modale --}}
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="eliminaGiocatoreLabel-{{ $giocatore->pivot->id }}">Elimina partecipazione di: {{ $giocatore->nome }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Vuoi eliminare la partecipazione di "<strong>{{ $giocatore->nome }}</strong>"? Questa azione è definitiva.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                                                        <form action="{{ route('game_player.destroy', $giocatore->pivot->id) }}" method="POST">
+                            
+                                                            @csrf
+                            
+                                                            @method('DELETE')
+                            
+                                                            <input type="submit" class="btn btn-danger" value="Elimina definitivamente">
+                                                        </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
