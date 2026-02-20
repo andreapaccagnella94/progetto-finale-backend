@@ -158,9 +158,14 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('games.show', $partita->id) }}" class="btn btn-info btn-sm" title="Dettagli partita">
-                                        Visualizza
-                                    </a>
+                                    <div class="btn-group gap-1">
+                                        <a href="{{ route('games.show', $partita->id) }}" class="btn btn-info btn-sm" title="Dettagli partita">
+                                            Visualizza
+                                        </a>
+                                        <a href="{{ route('game_player.edit', $partita->pivot->id) }}" class="btn btn-warning btn-sm">
+                                            Modifica
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

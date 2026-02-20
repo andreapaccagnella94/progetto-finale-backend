@@ -25,9 +25,22 @@ class GamePlayerController extends Controller
     {
         $giocatore_id = $request->get('giocatore_id');
         $partita_id = $request->get('partita_id');
+        $partita = Game::find($partita_id);
+        $giocatore = Player::find($giocatore_id);
 
-        $giocatori = Player::with('team')->orderBy('cognome')->get(); // con la funzione with pesco direttamente il metodo team all'interno del modello Player EAGER LOADING N+1
-        $partite = Game::with(['teamHome', 'teamAway'])->orderBy('data', 'desc')->get();
+        // faccio vedere solo i giocatori delle squadre della partita
+        if ($partita_id) {
+            $giocatori = Player::with('team')->where("squadra_id", $partita->teamHome->id)->orWhere("squadra_id", $partita->teamAway->id)->orderBy('squadra_id')->get(); // con la funzione with pesco direttamente il metodo team all'interno del modello Player EAGER LOADING N+1
+        } else {
+            $giocatori = Player::with('team')->orderBy('cognome')->get();
+        }
+
+        // faccio vedere solo le partite in cui è presente il giocatore
+        if ($giocatore_id) {
+            $partite = Game::with(['teamHome', 'teamAway'])->where("squadra_casa_id", $giocatore->team->id)->orWhere("squadra_trasferta_id", $giocatore->team->id)->orderBy('data', 'desc')->get();
+        } else {
+            $partite = Game::with(['teamHome', 'teamAway'])->orderBy('data', 'desc')->get();
+        }
 
         return view("game_player.create", compact("giocatori", "partite", "giocatore_id", "partita_id"));
     }
@@ -51,6 +64,17 @@ class GamePlayerController extends Controller
             return redirect()->back()
                 ->with('error', 'Il giocatore selezionato non appartiene a nessuna delle squadre di questa partita!') // crea una sessione con questo messaggio di "error" con ->with
                 ->withInput(); // recupero i campi del form old("name_che_voglio_recuperare")
+        }
+
+        // Controllo unicità: non permettere duplicate (stessa partita e stesso giocatore)
+        $exists = GamePlayer::where('game_id', $data['partita_id'])
+            ->where('player_id', $data['giocatore_id'])
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()
+                ->with('error', 'Questo giocatore è già registrato per la partita selezionata.')
+                ->withInput();
         }
 
 
