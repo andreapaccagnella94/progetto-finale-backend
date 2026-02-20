@@ -12,11 +12,24 @@
                     <i class="fas fa-plus"></i> Nuovo Giocatore
                 </a>
             </div>
-            {{-- cercare un giocatore per nome cognome e ruolo --}}
+            {{-- cercare un giocatore per nome cognome e ruolo + Milan--}}
             <div class="mb-3">
-                <form method="GET" action="{{ route('players.index') }}" class="d-flex">
-                    <input type="text" name="search" class="form-control me-2" placeholder="Cerca giocatore..." value="{{ request()->search }}">
-                    <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+                <form method="GET" action="{{ route('players.index') }}" class="row align-items-center g-1">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <input type="text" name="search" class="form-control" placeholder="Cerca giocatore..." value="{{ request()->search }}">
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <select name="squadra_id" id="squadraSelect" class="form-select">
+                            <option value="">Tutte le squadre</option>
+                            @foreach($squadre as $squadra)
+                                <option value="{{ $squadra->id }}" {{ (string)$squadra->id === (string)request()->squadra_id ? 'selected' : '' }}>{{ $squadra->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12 col-lg-4 d-flex justify-content-start ">
+                        <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+                    </div>
                 </form>
             </div>
             
@@ -86,7 +99,7 @@
                     </tbody>
                 </table>
             </div>
-            {{ $giocatori->links() }}
+            {{ $giocatori->appends(request()->all())->links() }}
         </div>
     </div>
 </div>
