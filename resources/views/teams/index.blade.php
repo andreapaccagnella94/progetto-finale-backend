@@ -12,17 +12,17 @@
             </div>
             
             
-            <!-- Griglia delle cards -->
+            {{-- Griglia delle cards --}}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-4">
                 @foreach($squadre as $squadra)
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <!-- Logo squadra se presente -->
+                        {{-- Logo squadra se presente --}}
                         @if($squadra->logo && Storage::disk('public')->exists($squadra->logo))
                         <div class="card-header text-white d-flex align-items-center">
                             <div class="me-3">
-                                <!-- Logo immagine dallo storage -->
-                                <img src="{{ Storage::url($squadra->logo) }}" 
+                                {{-- Logo immagine dallo storage --}}
+                                <img src="{{ asset ("storage/". $squadra->logo) }}" 
                                     alt="Logo {{ $squadra->nome }}" 
                                     class="rounded-circle border border-light"
                                     style="width: 50px; height: 50px; object-fit: cover;">
@@ -54,11 +54,11 @@
                                    class="btn btn-outline-warning btn-sm">
                                     <i class="fas fa-edit">Modifica</i>
                                 </a>
-                                <!-- Button trigger modal -->
+                                {{-- Button trigger modal --}}
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#eliminaSquadra-{{ $squadra->id }}">
                                     Elimina
                                 </button>
-                                <!-- Modal -->
+                                {{-- Modal --}}
                                 <div class="modal fade" id="eliminaSquadra-{{ $squadra->id }}" tabindex="-1" aria-labelledby="eliminaSquadraLabel-{{ $squadra->id }}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered"> {{-- mettere al centro il modale --}}
                                         <div class="modal-content">

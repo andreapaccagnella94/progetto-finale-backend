@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Component;
 
 class TeamController extends Controller
@@ -42,6 +43,13 @@ class TeamController extends Controller
         $newTeam->stadio = $data["stadio"];
         $newTeam->anno_fondazione = $data["anno_fondazione"];
 
+        // verifico caricamento logo
+        if (array_key_exists("logo", $data)) {
+            // carico logo
+            $img_url = Storage::putFile("squadre", $data["logo"]);
+            $newTeam->logo = $img_url;
+        }
+
         $newTeam->save();
 
         return redirect()->route("teams.show", $newTeam);
@@ -77,6 +85,20 @@ class TeamController extends Controller
         $squadra->citta = $data["citta"];
         $squadra->stadio = $data["stadio"];
         $squadra->anno_fondazione = $data["anno_fondazione"];
+
+        // verifico caricamento logo
+        if (array_key_exists("logo", $data)) {
+            // elimino logo "vecchio" se presente
+            if ($squadra->logo) {
+                Storage::delete($squadra->logo);
+            }
+
+            // carico logo
+            $img_url = Storage::putFile("squadre", $data["logo"]);
+
+            // aggiorno db
+            $squadra->logo = $img_url;
+        }
 
         $squadra->update();
 

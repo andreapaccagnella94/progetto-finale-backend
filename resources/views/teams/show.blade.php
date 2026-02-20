@@ -2,12 +2,12 @@
 
 @section('content')
 
-<div class="container-fluid d-flex justify-content-center">
+<div class="container justify-content-center">
     <div class="row">
-        <div class="card w-100 my-3"  style="max-width: 720px;">
+        <div class="card my-3 col-lg-4 col-md-12"  {{-- style="max-width: 720px;" --}}>
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="#" class="img-fluid rounded-start" alt="stemma_{{$squadra->nome}}">
+              <img src="{{asset("storage/". $squadra->logo)}}" class="img-fluid rounded-start" alt="stemma_{{$squadra->nome}}">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -21,11 +21,11 @@
             <a href="{{ route('teams.edit', $squadra->id) }}" class="btn btn-outline-warning btn-sm">
                 Modifica
             </a>
-            <!-- Button trigger modal -->
+            {{-- Button trigger modal --}}
             <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#eliminaSquadra-{{ $squadra->id }}">
                 Elimina
             </button>
-            <!-- Modal -->
+            {{-- Modal --}}
             <div class="modal fade" id="eliminaSquadra-{{ $squadra->id }}" tabindex="-1" aria-labelledby="eliminaSquadraLabel-{{ $squadra->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered"> {{-- mettere al centro il modale --}}
                     <div class="modal-content">
@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="accordion" id="accordionExample" >
+        <div class="accordion col-lg-8 col-md-12" id="accordionExample" >
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
