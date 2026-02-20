@@ -18,6 +18,9 @@ class PlayerController extends Controller
     {
         $giocatori_query = Player::orderBy("ruolo"); // usato paginate e aggiunto nel file AppServiceProvider.php le rige per usare Bootstrap come stile
 
+        // elenco squadre per la select nella view
+        $squadre = Team::all();
+
         if ($request->has('search')) {
             $search = $request->get('search');
             $giocatori_query->where(function ($q) use ($search) {
@@ -27,9 +30,14 @@ class PlayerController extends Controller
             });
         }
 
+        // filtro per squadra se il select ha un valore (squadra_id)
+        if ($request->filled('squadra_id')) {
+            $giocatori_query->where('squadra_id', $request->get('squadra_id'));
+        }
+
         $giocatori = $giocatori_query->paginate(12);
 
-        return view("players.index", compact("giocatori"));
+        return view("players.index", compact("giocatori", "squadre"));
     }
 
     /**
