@@ -4,10 +4,11 @@
 
 <div class="container">
     <div class="row">
+        {{-- card giocatore --}}
         <div class="card my-3 col-lg-4 col-md-12"  {{-- style="max-width: 540px;" --}}>
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="#" class="img-fluid rounded-start" alt="img_{{$giocatore->cognome}}">
+              <img src="{{asset ("storage/" . $giocatore->foto)}}" class="img-fluid rounded-start" alt="img_{{$giocatore->cognome}}">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -57,7 +58,7 @@
             </div>
           </div>
         </div>
-        <!-- Sezione Partite -->
+        {{-- Sezione Partite --}}
         <div class="mt-4 col-lg-8 col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">

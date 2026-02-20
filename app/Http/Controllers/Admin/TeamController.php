@@ -112,6 +112,11 @@ class TeamController extends Controller
     {
         $squadra = $team;
 
+        // verifico se la squadra ha un logo e nel caso elimino il file dal db
+        if ($squadra->logo) {
+            Storage::delete($squadra->logo);
+        }
+
         $squadra->delete();
 
         return redirect()->route("teams.index");

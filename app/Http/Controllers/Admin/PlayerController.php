@@ -7,8 +7,7 @@ use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class PlayerController extends Controller
 {
@@ -60,6 +59,13 @@ class PlayerController extends Controller
         $newPlayer->eta = $data["eta"];
         $newPlayer->squadra_id = $data["squadra_id"];
 
+        // verifico caricamento logo
+        if (array_key_exists("foto", $data)) {
+            // carico foto
+            $img_url = Storage::putFile("giocatori", $data["foto"]);
+            $newPlayer->foto = $img_url;
+        }
+
         $newPlayer->save();
 
         return redirect()->route("players.show", $newPlayer);
@@ -106,6 +112,20 @@ class PlayerController extends Controller
         $giocatore->eta = $data["eta"];
         $giocatore->squadra_id = $data["squadra_id"];
 
+        // verifico caricamento foto
+        if (array_key_exists("foto", $data)) {
+            // elimino foto "vecchia" se presente
+            if ($giocatore->foto) {
+                Storage::delete($giocatore->foto);
+            }
+
+            // carico foto
+            $img_url = Storage::putFile("giocatori", $data["foto"]);
+
+            // aggiorno db
+            $giocatore->foto = $img_url;
+        }
+
         $giocatore->update();
 
         // sincronizzare i dati con la tabella pivot
@@ -123,6 +143,11 @@ class PlayerController extends Controller
      */
     public function destroy(Player $player)
     {
+        // verifico se il giocatore ha una foto e nel caso elimino il file dal db
+        if ($player->logo) {
+            Storage::delete($player->logo);
+        }
+
         // verifico se il mio giocatore ha partite collegate e elimino dalla pivot
         if ($player->has("games")) {
             $player->games()->detach();

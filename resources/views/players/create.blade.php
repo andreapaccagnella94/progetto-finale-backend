@@ -11,21 +11,22 @@
                 </div>
                 {{-- form --}}
                 <div class="card-body">
-                    <form action="{{ route('players.store')}}" method="POST">
+                    {{-- enctype per caricamento immagini --}}
+                    <form action="{{ route('players.store')}}" method="POST" enctype="multipart/form-data">
                         
                         @csrf
                 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="nome" class="form-label">Nome giocatore</label>
                             <input type="text" name="nome" id="nome" class="form-control" required>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="cognome" class="form-label">Cognome giocatore</label>
                             <input type="text" name="cognome" id="cognome" class="form-control" required>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="ruolo" class="form-label">Ruolo</label>
                             <select name="ruolo" id="ruolo" class="form-control" required>
                                 <option value="">Seleziona Ruolo</option>
@@ -35,17 +36,23 @@
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="numero_maglia" class="form-label">Numero Maglia</label>
                             <input type="number" name="numero_maglia" id="numero_maglia" min="1" max="99" required>
                         </div>
                 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="eta" class="form-label">Età</label>
                             <input type="number" name="eta" id="eta" min="15" max="99" required>
                         </div>
+
+                        {{-- caricamento foto giocatore --}}
+                        <div class="form-control mb-3">
+                            <label for="foto" class="form-label">Foto Giocatore</label>
+                            <input type="file" name="foto" id="foto">
+                        </div>
                 
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label for="squadra_id" class="form-label">Selezione Squadra</label>
                             <select name="squadra_id" id="squadra_id" class="form-control" required>
                                 <option value="">Seleziona Squadra</option>
@@ -56,7 +63,7 @@
                         </div>
                 
                         <!-- Sezione Partite con Checkbox -->
-                        <div class="mb-3">
+                        <div class="form-control mb-3">
                             <label class="form-label">Partecipazione alle Partite</label>
                             <div class="alert alert-info">
                                 <small>Seleziona le partite in cui il giocatore ha partecipato</small>
@@ -70,7 +77,7 @@
                         </div>
                         
                 
-                        <button type="submit" class="btn btn-success">Salva Modifica Giocatore</button>
+                        <button type="submit" class="btn btn-success">Salva Giocatore</button>
                         <a href="{{ route('players.index') }}" class="btn btn-secondary">Annulla</a>
                     </form>
                 </div>
