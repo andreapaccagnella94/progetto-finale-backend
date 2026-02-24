@@ -91,7 +91,7 @@ class GamePlayerController extends Controller
 
         $newGamePlayer->save();
 
-        return redirect()->route("players.show", $data["giocatore_id"]);
+        return redirect()->route("games.show", $data["partita_id"]);
     }
 
     /**
@@ -118,7 +118,12 @@ class GamePlayerController extends Controller
     {
         $data = $request->all();
 
-        $game_player->titolare = $data["titolare"];
+        // verifico se è titolare
+        if (array_key_exists("titolare", $data)) {
+            $game_player->titolare = $data["titolare"];
+        } else {
+            $game_player->titolare = 0;
+        }
         $game_player->minuti_giocati = $data["minuti_giocati"];
         $game_player->gol_segnati = $data["gol_segnati"];
         $game_player->assist = $data["assist"];
@@ -127,7 +132,7 @@ class GamePlayerController extends Controller
 
         $game_player->update();
 
-        return redirect()->route("players.show", $game_player->player_id);
+        return redirect()->route("games.show", $game_player->game_id);
     }
 
     /**
